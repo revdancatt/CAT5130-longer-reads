@@ -4,6 +4,18 @@ runtime: python
 api_version: 1
 
 handlers:
+
+################################################################################
+# Queue Tasks Stuff
+################################################################################
+
+- url: /tasks/fetch_articles
+  script: tasks/fetch_articles.py
+  login: admin
+
+
+################################################################################
+
 - url: .*
   script: index.py
   login: admin
