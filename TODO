@@ -1,0 +1,18 @@
+From the admin side:
+
+  # Add the ability to reject stuff and un-queue stuff from the queued queue.
+  # Load the queue server side to sent to the template
+  
+From the cron side:
+
+  # Automatically post to Wordpress (early in the morning)
+  # Automatically tweet to twitter (around lunchtime)
+  # Cull rejected records older than x date
+  
+Later:
+
+  # Allow people to set-up automatic post to Instapaper
+
+Much Later:
+
+Re-order the queue
