@@ -15,9 +15,3 @@ indexes:
   - name: queued
   - name: last_update
     direction: desc
-
-- kind: Items
-  properties:
-  - name: queued
-  - name: last_updated
-    direction: desc
