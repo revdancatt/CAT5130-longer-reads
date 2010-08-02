@@ -70,7 +70,11 @@ class Main(webapp.RequestHandler):
     #
     json_a = []
     for row in rows:
-      json_a.append(simplejson.loads(row.json))
+      new_json = simplejson.loads(row.json)
+      new_json['response']['content']['fields']['time_spent'] = (row.time_spent)
+      new_json['response']['content']['fields']['view_count'] = (row.view_count)
+      new_json['response']['content']['fields']['percent'] = (row.percent)
+      json_a.append(new_json)
       
     template_values['review_items'] = simplejson.dumps(json_a).replace('\/','/').replace('}}}, {', '}}},\n{') # << larks!!!
     

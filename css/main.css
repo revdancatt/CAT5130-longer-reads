@@ -3,8 +3,10 @@ head { height: 100%; }
 body {
   font-family: sans-serif;
   font-size: 0.8em;
-  background: #f9f9f9;
+  background: white;
   min-height: 100%;
+  margin-left: 0px;
+  margin-top: 0px;
 }
 
 p, ul {
@@ -34,17 +36,19 @@ strong {
 
 
 div#review {
-  position: relative;
+  margin-top:10px;
+  margin-left:10px;
+}
+
+div#review h1.main {
+  font-size: 4em;
+  font-weight: bold;
 }
 
 
-div.preview {
-  font-size: 0.8em;
-  width:420px !important;
-  margin-top: 10px;
-  margin-left: 10px;
-  cursor: pointer;
-}
+
+
+
 
 div.snippet {
   
@@ -72,6 +76,8 @@ div.snippet p.standfirst {
   color: #666666;
   border-bottom: 1px solid black;
   padding-bottom: 1em;
+  clear: both;
+  overflow: hidden;
 }
 
 div.snippet p.byline {
@@ -79,6 +85,7 @@ div.snippet p.byline {
   line-height:1.25;
   padding-top: 0.4em;
   padding-bottom: 0em;
+  clear: both;
 }
 
 div.snippet p.place_date {
@@ -193,6 +200,37 @@ div.snippet_main div.body {
 
 
 
+
+
+
+div.preview {
+  font-size: 0.8em;
+  width:420px !important;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+div.preview p.standfirst img.thumbnail {
+  float: left;
+  margin-right: 10px;
+  margin-top: 4px;
+}
+
+div.preview p.standfirst {
+  border-bottom: 1px solid #cecece;
+}
+
+div.preview p.place_date {
+  border-bottom: none;
+  margin-bottom: 0px;
+}
+
+
+
+
+
+
+
 div.news_holder div#extras {
   float: left;
   padding: 5px;
@@ -200,9 +238,14 @@ div.news_holder div#extras {
 }
 
 div.news_holder div#extras h1 {
-  font-family: DE4;
-  font-size: 3.2em;
+  font-size: 3em;
 }
+
+div.news_holder div#details li.red {
+  color: red;
+}
+
+
 
 div.news_holder div#extras a.keywordbar {
   font-size: 1.2em;

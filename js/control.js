@@ -14,6 +14,7 @@ control = {
     
     //  empty the contents
     $('div#review').html('');
+    $('div#review').append($('<h1>').addClass('main').html('Review Queue'));
     
     //  loop thru each story and throw the review in there.
     $.each(data, function(index, story) {
@@ -61,9 +62,13 @@ control = {
       new_html += '<h1>' + content.webTitle + '</h1>';
       
       //  if we are anything but just 'headline' then carry on
-      new_html += '<p class="standfirst">' + content.fields.standfirst + '</p>';
+      new_html += '<p class="standfirst">'
+      if ('thumbnail' in content.fields) {
+        new_html += '<img class="thumbnail" src="' + content.fields.thumbnail + '" />'
+      }
+      new_html += content.fields.standfirst + '</p>';
       new_html += '<p class="byline">' + content.fields.byline + '</p>';
-      new_html += '<p class="place_date"><a href="http://' + content.fields.publication + '"> ' + content.fields.publication + '</a>, ';
+      new_html += '<p class="place_date">' + content.fields.publication + ', ';
       new_html += control.utils.formatDate(content.webPublicationDate) + '</p>';
       
       //  Check to see if there is a photo
@@ -145,10 +150,42 @@ control = {
       var content = null;
       $.each(data, function(index, story) {
         if (story.response.content.apiUrl == apiUrl) {
-          control.utils.write_article(story.response.content, 'main_news', 'full', 'main');
+          content = story.response.content;
+          control.utils.write_article(content, 'main_news', 'full', 'main');
         }
       })
   
+      
+      if (content == null) return;
+      
+      //  And now add the extra details
+      //  first get the wordcount
+      var word_count = 0;
+      $.each($('div#main_news div.body p'), function(index, p) {
+        word_count += $(p).html().split(' ').length;
+      })
+      var count_per_min = parseInt(word_count / content.fields.time_spent * 100)/100;
+      var count_per_sec = parseInt(word_count / content.fields.time_spent / 60 * 100)/100;
+      
+      $('div#details').html('');
+      var ul = $('<ul>');
+      ul.append($('<li>').html('Zone: ' + content.sectionName));
+      ul.append($('<li>').html('View Count: ' + content.fields.view_count));
+      ul.append($('<li>').html('Percent: ' + content.fields.percent));
+      ul.append($('<li>').html('Time Spend: ' + content.fields.time_spent));
+      ul.append($('<li>').html('Word Count: ' + word_count));
+      
+
+      if (count_per_min < 200) {
+        ul.append($('<li>').html('Words per min: ' + count_per_min).addClass('red'));
+      } else {
+        ul.append($('<li>').html('Words per min: ' + count_per_min));
+      }
+
+      ul.append($('<li>').html('Words per second: ' + count_per_sec));
+
+      $('div#details').append(ul);
+      
       //  Get the pages whole height
       $('.cover').height($('body').height());
       $('.cover').css('display', 'block').animate({ opacity: 0.95 }, 666, function() {
@@ -158,6 +195,9 @@ control = {
         if ($('div.news_holder_holder').height() > $('body').height()) {
           $('.cover').height($('div.news_holder_holder').height()+10);
         }
+        
+        scroll(0,0);
+        
       })
 
     },
