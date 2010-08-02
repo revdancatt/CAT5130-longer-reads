@@ -1,17 +1,47 @@
 <html lang="en">
 <head>
-    <title>Title</title>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="/js/control.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/main.css" />
-    <script>
+  <title>Title</title>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="/js/md5.js"></script>
+  <script type="text/javascript" src="/js/control.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.1.1/build/cssreset/reset-min.css" />
+  <link rel="stylesheet" type="text/css" href="/css/main.css" />
+  <script>
     var data = {{ review_items }};
-    </script>
+  </script>
 </head>
 <body>
   
+<div id="review">
+</div>
   
-  
-  Hello World
+
+
+
+
+<div class="cover">
+</div>
+
+<div class="news_holder_holder">
+  <div class="news_holder">
+
+    <div id="main_news" class="snippet snippet_main">
+    </div>
+
+    <div id="extras">
+      <h1>Keywords</h1>
+      <div id="main_keywords">
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    control.display_review();
+  });
+</script>
+
 </body>
 </html>

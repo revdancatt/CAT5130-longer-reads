@@ -15,6 +15,20 @@ handlers:
 
 
 ################################################################################
+# Pages
+################################################################################
+
+- url: /css
+  static_dir: css
+
+- url: /js
+  static_dir: js
+
+- url: /imgs
+  static_dir: imgs
+
+- url: /fonts
+  static_dir: fonts
 
 - url: .*
   script: index.py
