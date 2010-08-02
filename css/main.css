@@ -38,13 +38,19 @@ div#review {
 }
 
 
+div.preview {
+  font-size: 0.8em;
+  width:420px !important;
+  margin-top: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
 div.snippet {
   
-  width:320px;
+  width:520px;
   padding: 5px;
-  margin-right: 10px;
   background: #f0f0f0;
-  float: left;
   
 }
 

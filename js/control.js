@@ -16,25 +16,18 @@ control = {
     $('div#review').html('');
     
     //  loop thru each story and throw the review in there.
-    var new_width = 0;
     $.each(data, function(index, story) {
-      console.log(story);
       var d = $('<div>');
+      d.addClass('preview');
       d.addClass('snippet');
       d.attr('id', hex_md5(story.response.content.apiUrl));
-      d.css('position', 'absolute');
-      d.css('top', '0px');
-      d.css('left', new_width);
       d.click( function() {
         control.utils.show_story(story.response.content.apiUrl);
       });
       $('div#review').append(d);
       
-      control.utils.write_article(story.response.content, hex_md5(story.response.content.apiUrl), 'short', 'fun');
-      
-      new_width += 320;
-      new_width += 20;
-      
+      control.utils.write_preview(story.response.content, hex_md5(story.response.content.apiUrl));
+            
     })
     
   },
@@ -54,6 +47,43 @@ control = {
 
   utils: {
 
+    write_preview: function(content, target_div) {
+      
+      if (target_div == null) {
+        return;
+      }
+      
+      if ($('div#' + target_div) == null) {
+        return;
+      }
+      
+      var new_html = ''
+      new_html += '<h1>' + content.webTitle + '</h1>';
+      
+      //  if we are anything but just 'headline' then carry on
+      new_html += '<p class="standfirst">' + content.fields.standfirst + '</p>';
+      new_html += '<p class="byline">' + content.fields.byline + '</p>';
+      new_html += '<p class="place_date"><a href="http://' + content.fields.publication + '"> ' + content.fields.publication + '</a>, ';
+      new_html += control.utils.formatDate(content.webPublicationDate) + '</p>';
+      
+      //  Check to see if there is a photo
+      if ('mediaAssets' in content && content.mediaAssets[0].type == 'picture') {
+        if (parseInt(content.mediaAssets[0].fields.width) >= 320) {
+          new_html += '<img class="main" src="' + content.mediaAssets[0].file + '" />';
+        } else {
+          new_html += '<img class="main" src="' + content.mediaAssets[0].file + '" />';
+        }
+        if ('caption' in content.mediaAssets[0].fields) {
+          new_html += '<p class="photo_caption">' + content.mediaAssets[0].fields.caption + '</p>';
+        } else if ('credit' in content.mediaAssets[0].fields) {
+          new_html += '<p class="photo_caption">' + content.mediaAssets[0].fields.credit + '</p>';
+        }
+      }
+        
+      $('div#' + target_div).html(new_html);            
+      
+    },
+
     write_article: function(content, target_div, article_length, reason) {
       
       if (target_div == null || article_length == null) {
@@ -65,7 +95,7 @@ control = {
       }
       
       var new_html = ''
-      new_html += '<h1><a href="' + content.webUrl + '">' + content.webTitle + '</a></h1>';
+      new_html += '<h1>' + content.webTitle + '</h1>';
       
       //  if we are anything but just 'headline' then carry on
       if (article_length != 'headline') {
@@ -111,8 +141,6 @@ control = {
 
     show_story: function(apiUrl) {
 
-      console.log(apiUrl);
-      
       //  Now we need to get the correct content thing
       var content = null;
       $.each(data, function(index, story) {
