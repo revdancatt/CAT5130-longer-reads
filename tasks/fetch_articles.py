@@ -4,10 +4,6 @@ from google.appengine.api import urlfetch
 from google.appengine.ext import db
 from django.utils import simplejson
 
-from google.appengine.api.labs import taskqueue
-from google.appengine.ext.webapp import template
-from google.appengine.ext import webapp
-
 from admin.models import Items
 
 import os

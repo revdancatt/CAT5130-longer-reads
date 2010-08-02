@@ -2,6 +2,10 @@
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
+from google.appengine.ext import db
+from django.utils import simplejson
+
+from admin.models import Items
 
 import os
 import sys
@@ -43,12 +47,32 @@ except Exception:
 class Main(webapp.RequestHandler):
   def get(self):
 
-    template_values = {}
+    #
+    # Setup the template values, may as well throw the guardian api
+    # key in there at the same time
+    #
+    template_values = {
+      'guardian_api_key': passwords.guardian_api_key(),
+    }
     
-    print ''
-    print 'hello'
-    print passwords.password()
-    sys.exit()
+    #
+    # Now I want to know what articles are waiting to be reviewed and so on
+    #
+    rows = db.GqlQuery("SELECT * FROM Items WHERE unreviewed = 1")
+    
+    #
+    # Yes, yes I know this is dumb, so go make it better, anyway I just want this
+    # crap to work, so I'm going to loop over the json, load it, shove it into
+    # an array and then just dump the whole thing out again, with some
+    # gnarly replacing, just to make it look nice ... I know, I know, blame
+    # the older version of Django being used by App Engine, when they
+    # update to something sensible *then* I'll clean this up, ok?!
+    #
+    json_a = []
+    for row in rows:
+      json_a.append(simplejson.loads(row.json))
+      
+    template_values['review_items'] = simplejson.dumps(json_a).replace('\/','/').replace('}}}, {', '}}},\n{') # << larks!!!
     
     path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
     self.response.out.write(template.render(path, template_values))
