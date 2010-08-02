@@ -35,15 +35,20 @@ strong {
 
 
 
-div#review {
+div#review,
+div#queued {
   margin-top:10px;
   margin-left:10px;
+  width: 450px;
+  float:left;
 }
 
-div#review h1.main {
+div#review h1.main,
+div#queued h1.main {
   font-size: 4em;
   font-weight: bold;
 }
+
 
 
 

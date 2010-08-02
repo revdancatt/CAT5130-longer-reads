@@ -42,11 +42,57 @@ control = {
   },
   
   approve: function(apiUrl) {
-    //console.log(apiUrl);
+
+    var data = {
+      'apiUrl' : apiUrl
+    }
+
+    $.ajax({ url: "/api/lr.article.approve", data: data, complete: function(response){
+
+      //  Now we need to find the slot that represents this story and remove it
+      var hash_id = hex_md5(data.apiUrl);
+      var stored_height = $('div#' + hash_id).height();
+      $('div#' + hash_id).css('height', stored_height);
+      $('div#' + hash_id).css('overflow', 'hidden');
+      $('div#' + hash_id).css('display', 'block').animate({ opacity: 0.0 }, 666, function() {
+        $('div#' + hash_id).animate({ height: 1 }, 333, function() {
+          $('div#' + hash_id).css('display', 'none');
+          //  Now remove the item and append it to the end of the queue column
+          var d = $('div#' + hash_id).detach();
+          d.css('display', 'block');
+          d.css('height', stored_height);
+          $('div#queued').append(d);
+          d.animate({ opacity: 1.0 }, 666, function() {
+            //console.log('done');
+          });
+        })
+      })
+
+
+    }})
+
   },
   
   reject: function(apiUrl) {
-    //console.log(apiUrl);
+
+    var data = {
+      'apiUrl' : apiUrl
+    }
+
+    $.ajax({ url: "/api/lr.article.reject", data: data, complete: function(response){
+      
+      //  Now we need to find the slot that represents this story and remove it
+      var hash_id = hex_md5(data.apiUrl);
+      $('div#' + hash_id).css('height', $('div#' + hash_id).height());
+      $('div#' + hash_id).css('overflow', 'hidden');
+      $('div#' + hash_id).css('display', 'block').animate({ opacity: 0.0 }, 666, function() {
+        $('div#' + hash_id).animate({ height: 1 }, 333, function() {
+          $('div#' + hash_id).css('display', 'none');
+        })
+      })
+      
+    }})
+
   },
   
   
@@ -215,7 +261,7 @@ control = {
       //  And the word count
       if (word_count >= 2000) {
         ul.append($('<li>').html('Word Count: ' + word_count).addClass('green'));
-      } else if (word_count < 200) {
+      } else if (word_count < 1000) {
         ul.append($('<li>').html('Word Count: ' + word_count).addClass('red'));
       } else {
         ul.append($('<li>').html('Word Count: ' + word_count));
@@ -228,7 +274,11 @@ control = {
         ul.append($('<li>').html('Words per min: ' + count_per_min));
       }
       
-      ul.append($('<li>').html('Words per second: ' + count_per_sec));
+      if (count_per_sec < (200/60)) {
+        ul.append($('<li>').html('Words per second: ' + count_per_sec).addClass('red'));
+      } else {
+        ul.append($('<li>').html('Words per second: ' + count_per_sec));
+      }
       $('div#details').append(ul);
       
       
@@ -250,8 +300,8 @@ control = {
       //
       $('div#actions').html('');
       var ul = $('<ul>');
-      ul.append($('<li>').html('approve').click( function() {control.approve(apiUrl); return false }));
-      ul.append($('<li>').html('reject').click( function() {control.reject(apiUrl); return false }));
+      ul.append($('<li>').html('approve').click( function() {control.approve(apiUrl)}));
+      ul.append($('<li>').html('reject').click( function() {control.reject(apiUrl)}));
       ul.append($('<li>').append($('<a>').attr('href', content.webUrl).attr('target', '_blank').html('view original')));
       
       $('div#actions').append(ul);
