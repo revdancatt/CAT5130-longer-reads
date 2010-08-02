@@ -78,6 +78,22 @@ class Main(webapp.RequestHandler):
       
     template_values['review_items'] = simplejson.dumps(json_a).replace('\/','/').replace('}}}, {', '}}},\n{') # << larks!!!
     
+    #
+    # Now I want to know what articles are waiting to be reviewed and so on
+    #
+    rows = db.GqlQuery("SELECT * FROM Items WHERE queued = 1 ORDER BY last_update DESC")
+    
+    json_a = []
+    for row in rows:
+      new_json = simplejson.loads(row.json)
+      new_json['response']['content']['fields']['time_spent'] = (row.time_spent)
+      new_json['response']['content']['fields']['view_count'] = (row.view_count)
+      new_json['response']['content']['fields']['percent'] = (row.percent)
+      json_a.append(new_json)
+      
+    template_values['queued_items'] = simplejson.dumps(json_a).replace('\/','/').replace('}}}, {', '}}},\n{') # << larks!!!
+    
+
     path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
     self.response.out.write(template.render(path, template_values))
     

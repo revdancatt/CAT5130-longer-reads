@@ -39,6 +39,25 @@ control = {
             
     })
     
+    //  empty the contents
+    $('div#queued').html('');
+    $('div#queued').append($('<h1>').addClass('main').html('Queued stories'));
+    
+    //  loop thru each story and throw the review in there.
+    $.each(queued_data, function(index, story) {
+      var d = $('<div>');
+      d.addClass('preview');
+      d.addClass('snippet');
+      d.attr('id', hex_md5(story.response.content.apiUrl));
+      d.click( function() {
+        control.utils.show_story(story.response.content.apiUrl);
+      });
+      $('div#queued').append(d);
+      
+      control.utils.write_preview(story.response.content, hex_md5(story.response.content.apiUrl));
+            
+    })
+    
   },
   
   approve: function(apiUrl) {
@@ -227,9 +246,18 @@ control = {
       })
   
       
-      if (content == null) return;
+      if (content == null) {
+        $.each(queued_data, function(index, story) {
+          if (story.response.content.apiUrl == apiUrl) {
+            content = story.response.content;
+            control.utils.write_article(content, 'main_news', 'full', 'main');
+          }
+        })
+      }
 
       
+      if (content == null) return;
+
       //
       //  And now add the extra details
       //  first get the wordcount
