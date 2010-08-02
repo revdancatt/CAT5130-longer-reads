@@ -245,6 +245,18 @@ div.news_holder div#details li.red {
   color: red;
 }
 
+div.news_holder div#details li.green {
+  color: green;
+}
+
+div.news_holder div#actions li {
+  cursor: pointer;
+  list-style: none;
+  color: blue;
+  text-decoration: underline;
+}
+
+
 
 
 div.news_holder div#extras a.keywordbar {

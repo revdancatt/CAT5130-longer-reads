@@ -10,6 +10,14 @@ control = {
       })
     })
 
+    //  Attach events to objects
+    $('div.cover').click( function() {
+      $('.news_holder_holder').css('display', 'none');
+      $('.cover').css('display', 'block').animate({ opacity: 0.0 }, 333, function() {
+        $('.cover').css('display', 'none');
+      })
+    })
+
     //  Now I want to go and loop thru all the data things and try and display them
     
     //  empty the contents
@@ -33,7 +41,15 @@ control = {
     
   },
   
-
+  approve: function(apiUrl) {
+    //console.log(apiUrl);
+  },
+  
+  reject: function(apiUrl) {
+    //console.log(apiUrl);
+  },
+  
+  
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
@@ -47,6 +63,9 @@ control = {
   //////////////////////////////////////////////////////////////////////////////
 
   utils: {
+
+
+
 
     write_preview: function(content, target_div) {
       
@@ -88,6 +107,9 @@ control = {
       $('div#' + target_div).html(new_html);            
       
     },
+
+
+
 
     write_article: function(content, target_div, article_length, reason) {
       
@@ -144,6 +166,9 @@ control = {
       
     },
 
+
+
+
     show_story: function(apiUrl) {
 
       //  Now we need to get the correct content thing
@@ -157,9 +182,13 @@ control = {
   
       
       if (content == null) return;
+
       
+      //
       //  And now add the extra details
       //  first get the wordcount
+      //
+
       var word_count = 0;
       $.each($('div#main_news div.body p'), function(index, p) {
         word_count += $(p).html().split(' ').length;
@@ -172,20 +201,64 @@ control = {
       ul.append($('<li>').html('Zone: ' + content.sectionName));
       ul.append($('<li>').html('View Count: ' + content.fields.view_count));
       ul.append($('<li>').html('Percent: ' + content.fields.percent));
-      ul.append($('<li>').html('Time Spend: ' + content.fields.time_spent));
-      ul.append($('<li>').html('Word Count: ' + word_count));
-      
 
+      //  The next three involve a little colour styling ... not the best way of
+      //  doing this, but readable for the moment. I'll shorthand it later
+      
+      //  Show the time spent
+      if (content.fields.time_spent >= 6.0) {
+        ul.append($('<li>').html('Time Spend: ' + content.fields.time_spent).addClass('green'));
+      } else {
+        ul.append($('<li>').html('Time Spend: ' + content.fields.time_spent));
+      }
+
+      //  And the word count
+      if (word_count >= 2000) {
+        ul.append($('<li>').html('Word Count: ' + word_count).addClass('green'));
+      } else if (word_count < 200) {
+        ul.append($('<li>').html('Word Count: ' + word_count).addClass('red'));
+      } else {
+        ul.append($('<li>').html('Word Count: ' + word_count));
+      }
+      
+      //  And the count per min
       if (count_per_min < 200) {
         ul.append($('<li>').html('Words per min: ' + count_per_min).addClass('red'));
       } else {
         ul.append($('<li>').html('Words per min: ' + count_per_min));
       }
-
+      
       ul.append($('<li>').html('Words per second: ' + count_per_sec));
-
       $('div#details').append(ul);
       
+      
+      //
+      //  Lets grab the keywords
+      //
+      $('div#keywords').html('');
+      var ul = $('<ul>');
+      $.each(content.tags, function(index, tag) {
+        if (tag.type == 'keyword') {
+          ul.append($('<li>').html(tag.webTitle));
+        }
+      })
+      $('div#keywords').append(ul);
+      
+      
+      //
+      //  Now add the actions
+      //
+      $('div#actions').html('');
+      var ul = $('<ul>');
+      ul.append($('<li>').html('approve').click( function() {control.approve(apiUrl); return false }));
+      ul.append($('<li>').html('reject').click( function() {control.reject(apiUrl); return false }));
+      ul.append($('<li>').append($('<a>').attr('href', content.webUrl).attr('target', '_blank').html('view original')));
+      
+      $('div#actions').append(ul);
+      
+      
+
+
       //  Get the pages whole height
       $('.cover').height($('body').height());
       $('.cover').css('display', 'block').animate({ opacity: 0.95 }, 666, function() {
