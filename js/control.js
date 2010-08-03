@@ -23,7 +23,7 @@ control = {
     //  Do the to be reviewed column
     //
     $('div#review').html('');
-    $('div#review').append($('<h1>').addClass('main').html('Review Queue'));
+    $('div#review').append($('<h1>').addClass('main').html('Review Queue ' + data.length));
     
     //  loop thru each story and throw the review in there.
     $.each(data, function(index, story) {
@@ -45,7 +45,7 @@ control = {
     //  Do the queued column
     //
     $('div#queued').html('');
-    $('div#queued').append($('<h1>').addClass('main').html('Queued stories'));
+    $('div#queued').append($('<h1>').addClass('main').html('Queued stories ' + queued_data.length));
     
     //  loop thru each story and throw the review in there.
     $.each(queued_data, function(index, story) {
@@ -97,6 +97,9 @@ control = {
           })
           data = new_array;
 
+          $('div#review h1.main').html('Review Queue ' + data.length);
+          $('div#queued h1.main').html('Queued stories ' + queued_data.length);
+
         })
       })
 
@@ -137,6 +140,9 @@ control = {
           })
           queued_data = new_array;
 
+          $('div#review h1.main').html('Review Queue ' + data.length);
+          $('div#queued h1.main').html('Queued stories ' + queued_data.length);
+
         })
       })
 
@@ -161,6 +167,9 @@ control = {
         })
       })
       
+      $('div#review h1.main').html('Review Queue ' + data.length);
+      $('div#queued h1.main').html('Queued stories ' + queued_data.length);
+
     }})
 
   },
@@ -369,10 +378,10 @@ control = {
       
       if (is_from == 'review') {
         ul.append($('<li>').html('approve').click( function() {control.approve(apiUrl)}));
-        ul.append($('<li>').html('reject').click( function() {control.reject(apiUrl)}));
       } else {
         ul.append($('<li>').html('unapprove').click( function() {control.unapprove(apiUrl)}));
       }
+      ul.append($('<li>').html('reject').click( function() {control.reject(apiUrl)}));
       ul.append($('<li>').append($('<a>').attr('href', content.webUrl).attr('target', '_blank').html('view original')));
       
       $('div#actions').append(ul);

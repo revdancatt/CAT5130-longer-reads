@@ -15,6 +15,10 @@ handlers:
   script: tasks/fetch_articles.py
   login: admin
 
+- url: /tasks/publish_article
+  script: tasks/publish_article.py
+  login: admin
+
 
 
 ################################################################################
@@ -23,12 +27,15 @@ handlers:
 
 - url: /api/lr.article.approve
   script: api/lr.article.approve.py
+  login: admin
 
 - url: /api/lr.article.unapprove
   script: api/lr.article.unapprove.py
+  login: admin
 
 - url: /api/lr.article.reject
   script: api/lr.article.reject.py
+  login: admin
 
 
 

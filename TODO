@@ -1,6 +1,5 @@
 From the admin side:
 
-  # Add numbers to the titles so we can see how many things are in the queue
   # Show order and dates that the queued posts will be published
   
 From the cron side:

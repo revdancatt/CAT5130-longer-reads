@@ -3,3 +3,7 @@ cron:
 - description: fetch articles for review
   url: /tasks/fetch_articles
   schedule: every 20 minutes
+
+- description: post an article to wordpress
+  url: /tasks/post_article
+  schedule: every 1 hours
