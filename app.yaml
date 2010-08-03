@@ -24,6 +24,9 @@ handlers:
 - url: /api/lr.article.approve
   script: api/lr.article.approve.py
 
+- url: /api/lr.article.unapprove
+  script: api/lr.article.unapprove.py
+
 - url: /api/lr.article.reject
   script: api/lr.article.reject.py
 

@@ -17,10 +17,11 @@ control = {
         $('.cover').css('display', 'none');
       })
     })
-
-    //  Now I want to go and loop thru all the data things and try and display them
     
-    //  empty the contents
+
+    //
+    //  Do the to be reviewed column
+    //
     $('div#review').html('');
     $('div#review').append($('<h1>').addClass('main').html('Review Queue'));
     
@@ -39,7 +40,10 @@ control = {
             
     })
     
-    //  empty the contents
+
+    //
+    //  Do the queued column
+    //
     $('div#queued').html('');
     $('div#queued').append($('<h1>').addClass('main').html('Queued stories'));
     
@@ -60,16 +64,15 @@ control = {
     
   },
   
+  
+  
+  
   approve: function(apiUrl) {
 
-    var data = {
-      'apiUrl' : apiUrl
-    }
-
-    $.ajax({ url: "/api/lr.article.approve", data: data, complete: function(response){
+    $.ajax({ url: "/api/lr.article.approve", data: {'apiUrl' : apiUrl}, complete: function(response){
 
       //  Now we need to find the slot that represents this story and remove it
-      var hash_id = hex_md5(data.apiUrl);
+      var hash_id = hex_md5(apiUrl);
       var stored_height = $('div#' + hash_id).height();
       $('div#' + hash_id).css('height', stored_height);
       $('div#' + hash_id).css('overflow', 'hidden');
@@ -81,9 +84,19 @@ control = {
           d.css('display', 'block');
           d.css('height', stored_height);
           $('div#queued').append(d);
-          d.animate({ opacity: 1.0 }, 666, function() {
-            //console.log('done');
-          });
+          d.animate({ opacity: 1.0 }, 666);
+
+          //  remove it from the data array and into the queued_data array
+          var new_array = []
+          $.each(data, function(index, obj) {
+            if (obj.response.content.apiUrl == apiUrl) {
+              queued_data.push(obj);
+            } else {
+              new_array.push(obj);
+            }
+          })
+          data = new_array;
+
         })
       })
 
@@ -92,16 +105,54 @@ control = {
 
   },
   
+  
+  
+  unapprove: function(apiUrl) {
+
+    $.ajax({ url: "/api/lr.article.unapprove", data: {'apiUrl' : apiUrl}, complete: function(response){
+
+      //  Now we need to find the slot that represents this story and remove it
+      var hash_id = hex_md5(apiUrl);
+      var stored_height = $('div#' + hash_id).height();
+      $('div#' + hash_id).css('height', stored_height);
+      $('div#' + hash_id).css('overflow', 'hidden');
+      $('div#' + hash_id).css('display', 'block').animate({ opacity: 0.0 }, 666, function() {
+        $('div#' + hash_id).animate({ height: 1 }, 333, function() {
+          $('div#' + hash_id).css('display', 'none');
+          //  Now remove the item and append it to the end of the queue column
+          var d = $('div#' + hash_id).detach();
+          d.css('display', 'block');
+          d.css('height', stored_height);
+          $('div#review').append(d);
+          d.animate({ opacity: 1.0 }, 666);
+          
+          //  remove it from the queued_data array and into the data array
+          var new_array = []
+          $.each(queued_data, function(index, obj) {
+            if (obj.response.content.apiUrl == apiUrl) {
+              data.push(obj);
+            } else {
+              new_array.push(obj);
+            }
+          })
+          queued_data = new_array;
+
+        })
+      })
+
+
+    }})
+
+  },
+  
+  
+  
   reject: function(apiUrl) {
 
-    var data = {
-      'apiUrl' : apiUrl
-    }
-
-    $.ajax({ url: "/api/lr.article.reject", data: data, complete: function(response){
+    $.ajax({ url: "/api/lr.article.reject", data: {'apiUrl' : apiUrl}, complete: function(response){
       
       //  Now we need to find the slot that represents this story and remove it
-      var hash_id = hex_md5(data.apiUrl);
+      var hash_id = hex_md5(apiUrl);
       $('div#' + hash_id).css('height', $('div#' + hash_id).height());
       $('div#' + hash_id).css('overflow', 'hidden');
       $('div#' + hash_id).css('display', 'block').animate({ opacity: 0.0 }, 666, function() {
@@ -188,45 +239,29 @@ control = {
       
       var new_html = ''
       new_html += '<h1>' + content.webTitle + '</h1>';
+      new_html += '<p class="standfirst">' + content.fields.standfirst + '</p>';
+      new_html += '<p class="byline">' + content.fields.byline + '</p>';
+      new_html += '<p class="place_date">' + content.fields.publication + ', ';
+      new_html += control.utils.formatDate(content.webPublicationDate) + '</p>';
       
-      //  if we are anything but just 'headline' then carry on
-      if (article_length != 'headline') {
-        new_html += '<p class="standfirst">' + content.fields.standfirst + '</p>';
-        if (article_length != 'tiny') {
-          new_html += '<p class="byline">' + content.fields.byline + '</p>';
-          new_html += '<p class="place_date"><a href="http://' + content.fields.publication + '"> ' + content.fields.publication + '</a>, ';
-          new_html += control.utils.formatDate(content.webPublicationDate) + '</p>';
-          
-          //  if we are anything other than short carry on
-          if (article_length != 'short') {
-            
-            //  Check to see if there is a photo
-            if ('mediaAssets' in content && content.mediaAssets[0].type == 'picture') {
-              if (parseInt(content.mediaAssets[0].fields.width) >= 320) {
-                new_html += '<img class="main" src="' + content.mediaAssets[0].file + '" />';
-              } else {
-                new_html += '<img class="main" src="' + content.mediaAssets[0].file + '" />';
-              }
-              if ('caption' in content.mediaAssets[0].fields) {
-                new_html += '<p class="photo_caption">' + content.mediaAssets[0].fields.caption + '</p>';
-              } else if ('credit' in content.mediaAssets[0].fields) {
-                new_html += '<p class="photo_caption">' + content.mediaAssets[0].fields.credit + '</p>';
-              }
-            }
-            
-            //  If we are medium length, just display the first para, otherwuise
-            if (article_length == 'medium') {
-              if ('body' in content.fields) {
-                var new_body = content.fields.body.split('</p>');
-                new_html += '<div class="body">' + new_body[0] + '</div><p class="more"><a href="' + content.webUrl + '">More</a> ...</p>';
-              }
-            } else if (article_length == 'full') {
-              new_html += '<div class="body">' + content.fields.body + '</div>';
-            }
-          }
+      //  Check to see if there is a photo
+      if ('mediaAssets' in content && content.mediaAssets[0].type == 'picture') {
+        if (parseInt(content.mediaAssets[0].fields.width) >= 320) {
+          new_html += '<img class="main" src="' + content.mediaAssets[0].file + '" />';
+        } else {
+          new_html += '<img class="main" src="' + content.mediaAssets[0].file + '" />';
+        }
+        if ('caption' in content.mediaAssets[0].fields) {
+          new_html += '<p class="photo_caption">' + content.mediaAssets[0].fields.caption + '</p>';
+        } else if ('credit' in content.mediaAssets[0].fields) {
+          new_html += '<p class="photo_caption">' + content.mediaAssets[0].fields.credit + '</p>';
         }
       }
+      
+      //  The main content
+      new_html += '<div class="body">' + content.fields.body + '</div>';
   
+      //  Put it into the target
       $('div#' + target_div).html(new_html);            
       
     },
@@ -238,10 +273,12 @@ control = {
 
       //  Now we need to get the correct content thing
       var content = null;
+      var is_from = null;
       $.each(data, function(index, story) {
         if (story.response.content.apiUrl == apiUrl) {
           content = story.response.content;
           control.utils.write_article(content, 'main_news', 'full', 'main');
+          is_from = 'review';
         }
       })
   
@@ -251,6 +288,7 @@ control = {
           if (story.response.content.apiUrl == apiUrl) {
             content = story.response.content;
             control.utils.write_article(content, 'main_news', 'full', 'main');
+            is_from = 'queued';
           }
         })
       }
@@ -328,8 +366,13 @@ control = {
       //
       $('div#actions').html('');
       var ul = $('<ul>');
-      ul.append($('<li>').html('approve').click( function() {control.approve(apiUrl)}));
-      ul.append($('<li>').html('reject').click( function() {control.reject(apiUrl)}));
+      
+      if (is_from == 'review') {
+        ul.append($('<li>').html('approve').click( function() {control.approve(apiUrl)}));
+        ul.append($('<li>').html('reject').click( function() {control.reject(apiUrl)}));
+      } else {
+        ul.append($('<li>').html('unapprove').click( function() {control.unapprove(apiUrl)}));
+      }
       ul.append($('<li>').append($('<a>').attr('href', content.webUrl).attr('target', '_blank').html('view original')));
       
       $('div#actions').append(ul);

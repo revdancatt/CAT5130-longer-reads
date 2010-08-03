@@ -2,4 +2,4 @@ cron:
 
 - description: fetch articles for review
   url: /tasks/fetch_articles
-  schedule: every 1 hours
+  schedule: every 20 minutes

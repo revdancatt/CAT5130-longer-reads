@@ -18,3 +18,27 @@ Later:
 Much Later:
 
 Re-order the queue
+
+
+---------
+
+
+import datetime, xmlrpclib
+
+wp_url = "http://xxxxxxxxxx.com/xmlrpc.php"
+wp_username = "xxxxxxx"
+wp_password = "********"
+wp_blogid = 0
+
+status_draft = 0
+status_published = 1
+
+server = xmlrpclib.ServerProxy(wp_url)
+
+title = "Another Test Post (again)"
+content = "Body with lots of content"
+categories = ["somecategory"]
+tags = ["sometag", "othertag", "pie cakes"]
+data = {'title': title, 'description': content, 'categories': categories, 'mt_keywords': tags}
+
+post_id = server.metaWeblog.newPost(wp_blogid, wp_username, wp_password, data, status_published) 
