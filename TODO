@@ -1,9 +1,7 @@
 From the admin side:
 
-  # Add the ability to reject stuff and un-queue stuff from the queued queue.
-  # Load the queue server side to sent to the template
-    # Show the dates when they will be published
-  # Update the last_update time when setting it's status
+  # Add numbers to the titles so we can see how many things are in the queue
+  # Show order and dates that the queued posts will be published
   
 From the cron side:
 

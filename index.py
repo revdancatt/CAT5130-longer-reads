@@ -81,7 +81,7 @@ class Main(webapp.RequestHandler):
     #
     # Now I want to know what articles are waiting to be reviewed and so on
     #
-    rows = db.GqlQuery("SELECT * FROM Items WHERE queued = 1 ORDER BY last_update DESC")
+    rows = db.GqlQuery("SELECT * FROM Items WHERE queued = 1 ORDER BY last_update ASC")
     
     json_a = []
     for row in rows:

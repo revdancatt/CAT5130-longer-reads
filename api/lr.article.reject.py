@@ -6,6 +6,7 @@ import os
 
 from google.appengine.ext import db
 from django.utils import simplejson
+from datetime import datetime
 from admin.models import Items
 
 
@@ -25,6 +26,7 @@ rows = db.GqlQuery("SELECT * FROM Items WHERE apiUrl = :1", apiUrl)
 for row in rows:
   row.unreviewed = 0
   row.rejected = 1
+  row.last_update = datetime.now()
   row.put()
 
 response = {'status': 'ok'}

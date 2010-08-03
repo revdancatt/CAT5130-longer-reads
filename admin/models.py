@@ -8,6 +8,7 @@ class Items(db.Model):
   rejected          = db.IntegerProperty(default=0)
   queued            = db.IntegerProperty(default=0)
   published         = db.IntegerProperty(default=0)
+  published_ordinal = db.IntegerProperty(default=0)
   backfilled        = db.IntegerProperty(default=0)
   view_count        = db.IntegerProperty(default=0)
   percent           = db.IntegerProperty(default=0)
