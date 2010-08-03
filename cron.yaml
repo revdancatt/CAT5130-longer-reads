@@ -5,5 +5,5 @@ cron:
   schedule: every 20 minutes
 
 - description: post an article to wordpress
-  url: /tasks/post_article
+  url: /tasks/publish_article
   schedule: every 1 hours
