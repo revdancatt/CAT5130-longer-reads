@@ -33,7 +33,10 @@ strong {
 
 
 
-
+div.nav {
+	margin-top:10px;
+	margin-left: 10px;
+}
 
 div#review,
 div#queued {

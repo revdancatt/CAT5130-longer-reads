@@ -164,12 +164,31 @@ control = {
       $('div#' + hash_id).css('display', 'block').animate({ opacity: 0.0 }, 666, function() {
         $('div#' + hash_id).animate({ height: 1 }, 333, function() {
           $('div#' + hash_id).css('display', 'none');
+
+          //  remove it from the data array
+          var new_array = []
+          $.each(data, function(index, obj) {
+            if (obj.response.content.apiUrl != apiUrl) {
+              new_array.push(obj);
+            }
+          })
+          data = new_array;
+    
+          //  remove it from the queued_data array
+          var new_array = []
+          $.each(queued_data, function(index, obj) {
+            if (obj.response.content.apiUrl != apiUrl) {
+              new_array.push(obj);
+            }
+          })
+          queued_data = new_array;
+    
+          $('div#review h1.main').html('Review Queue ' + data.length);
+          $('div#queued h1.main').html('Queued stories ' + queued_data.length);
+
         })
       })
       
-      $('div#review h1.main').html('Review Queue ' + data.length);
-      $('div#queued h1.main').html('Queued stories ' + queued_data.length);
-
     }})
 
   },
