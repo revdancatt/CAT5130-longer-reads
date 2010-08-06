@@ -102,16 +102,21 @@ try:
   o_now = datetime.now().toordinal()
   diff = datetime.now() - d
   d = d.strftime('%A&nbsp;%d&nbsp;%B&nbsp;%Y')
-  first_published += ' on ' + d + '.</p>'
+  first_published += ' on ' + d
 except:
-  first_published += '.</p>'
+  first_published += ''
 
 #
 # If there's a thumbnail, then add that in here too
 #
-if 'thumbnail' in json['fields']:
-  first_published += '<img src="' + json['fields']['thumbnail'] + '" class="lead_thumb" />'
+if 'byline' in json['fields']:
+  first_published += ' by ' + json['fields']['byline']
   
+first_published += '.</p>'
+
+if 'thumbnail' in json['fields']:
+  first_published += '<p><img src="' + json['fields']['thumbnail'] + '" class="lead_thumb" /></p>'
+
 #
 # Mush it all together
 #
