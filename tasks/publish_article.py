@@ -44,18 +44,29 @@ except Exception:
 # Check to see if the time is too early, if it is then
 # we exit here
 if datetime.now().hour <= 4:
-  print 'Too early'
+  print 'Too early for 1st publish'
   sys.exit()
   
-# Otherwise, see if we have already published today
+# Otherwise, see what has already published today
 o = datetime.now().toordinal()
 rows = db.GqlQuery("SELECT * FROM Items WHERE published_ordinal = :1", o)
 
-# if we have then exit here
-if rows.count() > 0:
-  print 'Already published'
+# If we have aleady published 2 articles today, then no more
+if rows.count() >= 2:
+  print 'Already published 2 articles'
   sys.exit()
   
+# If the time is before 3pm and we have just 1 article published
+# then we exit again.
+#
+# In theory this means that when we have 0 articles published we'll still
+# get past this step, when when we get to 16:00 we'll move past this step
+# to publish a second article, and then the fact we have a second article
+# we kick us out in the above check
+if datetime.now().hour <= 15 and rows.count() == 1:
+  print 'Too early for 2nd publish'
+  sys.exit()
+
 # Now we need to get the next item in the queue
 # If there is nothing in the queue then exit
 rows = db.GqlQuery("SELECT * FROM Items WHERE queued = 1 ORDER BY last_update ASC LIMIT 1")
