@@ -11,6 +11,7 @@ class Items(db.Model):
   published_ordinal = db.IntegerProperty(default=0)
   backfilled        = db.IntegerProperty(default=0)
   view_count        = db.IntegerProperty(default=0)
+  word_count        = db.IntegerProperty(default=0)
   percent           = db.IntegerProperty(default=0)
   time_spent        = db.FloatProperty(default=0.0)
   word_count        = db.IntegerProperty(default=0)

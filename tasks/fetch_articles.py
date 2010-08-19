@@ -90,13 +90,21 @@ for row in json['zeitgeist']:
     #
     # Now put the data so that we have something to review (I assume)
     #
+    word_count = 0
+    if 'response' in new_json and 'content' in new_json['response'] and 'fields' in new_json['response']['content'] and 'body' in new_json['response']['content']['fields']:
+      word_count = len(new_json['response']['content']['fields']['body'].split(' '))
+    
     try:
       new_row                  = Items()
       new_row.apiUrl           = str(row['apiUrl'])                    
       new_row.json             = simplejson.dumps(new_json)
       new_row.view_count       = int(row['view_count'])                    
       new_row.percent          = int(row['percent'])                    
-      new_row.time_spent       = float(row['time_spent'])                    
+      new_row.time_spent       = float(row['time_spent'])
+      new_row.word_count       = int(word_count)
+      if word_count < 1000:
+        new_row.unreviewed     = 0
+        new_row.rejected       = 1
       new_row.put()
     except Exception:
       logging.debug('Fetch Fail: minor: when putting data into database')
