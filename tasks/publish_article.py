@@ -126,12 +126,12 @@ if 'byline' in json['fields']:
 first_published += '.</p>'
 
 if 'thumbnail' in json['fields']:
-  first_published += '<p><img src="' + json['fields']['thumbnail'] + '" class="lead_thumb" /></p>'
+  content = '<p><img src="' + json['fields']['thumbnail'] + '" class="lead_thumb" /></p>' + content
 
 #
 # Mush it all together
 #
-content = first_published + content
+content = content + first_published
 data = {'title': title, 'description': content, 'categories': categories, 'mt_keywords': tags}
 
 #
