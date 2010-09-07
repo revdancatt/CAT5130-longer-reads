@@ -43,7 +43,7 @@ except Exception:
 
 # Check to see if the time is too early, if it is then
 # we exit here
-if datetime.now().hour <= 4:
+if datetime.now().hour <= 3:
   print 'Too early for 1st publish'
   sys.exit()
   
@@ -63,7 +63,7 @@ if rows.count() >= 2:
 # get past this step, when when we get to 16:00 we'll move past this step
 # to publish a second article, and then the fact we have a second article
 # we kick us out in the above check
-if datetime.now().hour <= 14 and rows.count() == 1:
+if datetime.now().hour <= 13 and rows.count() == 1:
   print 'Too early for 2nd publish'
   sys.exit()
 
