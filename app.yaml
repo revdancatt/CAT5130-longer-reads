@@ -55,6 +55,9 @@ handlers:
 - url: /fonts
   static_dir: fonts
 
+- url: /for_men
+  script: for_men.py
+
 - url: .*
   script: index.py
   login: admin
