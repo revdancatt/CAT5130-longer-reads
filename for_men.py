@@ -47,52 +47,45 @@ rows = db.GqlQuery("SELECT * FROM Items ORDER BY last_update DESC LIMIT 200")
 counter = 1
 results = []
 for row in rows:
-  if row.word_count >= 1000:
-    json = simplejson.loads(row.json)
-
-    # Keep a flag allowing us to approve or reject some content
-    reject = False
-    tags_ok = False
-
-    # go thru the tags making sure it's either news or a feature
-    for tag in json['response']['content']['tags']:
-      if tag['id'] in ['tone/features', 'tone/news']:
-        tags_ok = True
-
-    # go thru the tags making sure it's either news or a feature
-    if tags_ok == True:
-      tags_still_ok = False
-      for tag in json['response']['content']['tags']:
-        if tag['id'] in ['artanddesign/artanddesign', 'culture/culture', 'media/media', 'science/science', 'technology/technology', 'world/world']:
-          tags_still_ok = True
-
-
-    #
-    # if we failed the tags test, then reject the thing
-    if tags_ok == False or tags_still_ok == False:
-      reject = True
-
-    if reject == False:
-      print counter
-      print '<br />'
-      print row.apiUrl
-      print '<br />'
-      print 'Word Count: ' + str(row.word_count)
-      print '<br />'
-      print 'Hotness: ' + str(row.percent)
-      print '<br />'
-      for tag in json['response']['content']['tags']:
-        print tag['id']
-        print '<br />'
   
-      print '<br />'
+  try:
+    if row.word_count >= 1000:
+      json = simplejson.loads(row.json)
   
-      result = {'word_count': row.word_count, 'hotness': row.percent, json: simplejson.dumps(json)}
-      results.append(result)
-      counter+=1
-      if counter > 5:
-        break
-
+      # Keep a flag allowing us to approve or reject some content
+      reject = False
+      tags_ok = False
+  
+      # go thru the tags making sure it's either news or a feature
+      for tag in json['response']['content']['tags']:
+        if tag['id'] in ['tone/features', 'tone/news']:
+          tags_ok = True
+  
+      # go thru the tags making sure it's either news or a feature
+      if tags_ok == True:
+        tags_still_ok = False
+        for tag in json['response']['content']['tags']:
+          if tag['id'] in ['artanddesign/artanddesign', 'culture/culture', 'media/media', 'science/science', 'technology/technology', 'world/world']:
+            tags_still_ok = True
+  
+  
+      #
+      # if we failed the tags test, then reject the thing
+      if tags_ok == False or tags_still_ok == False:
+        reject = True
+  
+      if 'thumbnail' not in json['response']['content']['fields']:
+        reject = True
+        
+      if reject == False:
+        result = {'word_count': row.word_count, 'hotness': row.percent, 'json': json}
+        results.append(result)
+        counter+=1
+        if counter > 5:
+          break
+  except Exception:
+    continue
+  
 print 'Content-Type: application/json; charset=UTF-8'
 print ''      
-print simplejson.dumps(result)
+print simplejson.dumps(results)
