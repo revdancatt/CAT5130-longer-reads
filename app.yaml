@@ -37,6 +37,10 @@ handlers:
   script: api/lr.article.reject.py
   login: admin
 
+- url: /api/lr.get.news
+  script: api/lr.get.news.py
+  login: admin
+
 
 
 ################################################################################
