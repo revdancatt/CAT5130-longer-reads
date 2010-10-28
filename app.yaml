@@ -39,7 +39,6 @@ handlers:
 
 - url: /api/lr.get.news
   script: api/lr.get.news.py
-  login: admin
 
 
 
