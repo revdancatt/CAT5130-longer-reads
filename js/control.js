@@ -271,6 +271,7 @@ control = {
       new_html += '<p class="byline">' + content.fields.byline + '</p>';
       new_html += '<p class="place_date">' + content.fields.publication + ', ';
       new_html += control.utils.formatDate(content.webPublicationDate) + '</p>';
+      new_html += '<div class="reject">[ <a href="#" onclick="control.reject(\'' + content.apiUrl + '\'); return false;">reject</a>: ]';
       
       //  Check to see if there is a photo
       if ('mediaAssets' in content && content.mediaAssets[0].type == 'picture') {

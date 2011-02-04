@@ -64,6 +64,9 @@ handlers:
 - url: /for_men
   script: for_men.py
 
+- url: /wordcount
+  script: wordcount.py
+
 - url: .*
   script: index.py
   login: admin

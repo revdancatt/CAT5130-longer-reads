@@ -12,11 +12,11 @@ indexes:
 
 - kind: Items
   properties:
-  - name: queued
-  - name: last_update
-
-- kind: Items
-  properties:
   - name: published
   - name: last_update
     direction: desc
+
+- kind: Items
+  properties:
+  - name: queued
+  - name: last_update
