@@ -1,4 +1,7 @@
 control = {
+
+  blah: 1,
+  dontShow: false,
   
   display_review: function() {
     
@@ -154,7 +157,7 @@ control = {
   
   
   reject: function(apiUrl) {
-
+    
     $.ajax({ url: "/api/lr.article.reject", data: {'apiUrl' : apiUrl}, complete: function(response){
       
       //  Now we need to find the slot that represents this story and remove it
@@ -185,6 +188,8 @@ control = {
     
           $('div#review h1.main').html('Review Queue ' + data.length);
           $('div#queued h1.main').html('Queued stories ' + queued_data.length);
+          
+          control.dontShow = false;
 
         })
       })
@@ -233,7 +238,7 @@ control = {
       new_html += '<p class="byline">' + content.fields.byline + '</p>';
       new_html += '<p class="place_date">' + content.fields.publication + ', ';
       new_html += control.utils.formatDate(content.webPublicationDate) + '</p>';
-      
+      new_html += '<div class="quickReject">[ <a href="#" onclick="control.dontShow = true; control.reject(\'' + content.apiUrl + '\'); return false;">reject</a>: ]</div>';
       //  Check to see if there is a photo
       if ('mediaAssets' in content && content.mediaAssets[0].type == 'picture') {
         if (parseInt(content.mediaAssets[0].fields.width) >= 320) {
@@ -271,7 +276,7 @@ control = {
       new_html += '<p class="byline">' + content.fields.byline + '</p>';
       new_html += '<p class="place_date">' + content.fields.publication + ', ';
       new_html += control.utils.formatDate(content.webPublicationDate) + '</p>';
-      new_html += '<div class="reject">[ <a href="#" onclick="control.reject(\'' + content.apiUrl + '\'); return false;">reject</a>: ]';
+      
       
       //  Check to see if there is a photo
       if ('mediaAssets' in content && content.mediaAssets[0].type == 'picture') {
@@ -299,6 +304,12 @@ control = {
 
 
     show_story: function(apiUrl) {
+
+      //  If we've been told not to show, then toggle the switch back and return here
+      if (control.dontShow == true) {
+        control.dontShow = false;
+        return;
+      }
 
       //  Now we need to get the correct content thing
       var content = null;
