@@ -285,3 +285,52 @@ div#see_also a {
   display:inline-block;
   font-family:DS5,arial,sans-serif;  
 }
+
+div.contents h1 {
+	font-size: 48px;
+	font-weight: bold;
+}
+
+div.contents h2 {
+	font-size: 36px;
+	font-weight: bold;
+}
+
+div.contents dt {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+div.contents dd {
+	font-size: 14px;
+	font-weight: normal;
+	margin-left: 40px;
+	margin-bottom: 20px;
+}
+
+div.contents {
+	border-bottom: 10px solid black;
+	margin-bottom: 20px;
+}
+
+div.main h3 {
+	font-size: 48px;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+div.main h2 {
+	font-size: 18px;
+	font-weight: bold;
+	border-top: 1px dotted black;
+	border-bottom: 1px dotted black;
+	padding-top: 6px;
+	padding-bottom: 4px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+div.main div.storyHolder {
+	border-bottom: 5px solid black;
+	margin-bottom: 20px;
+}

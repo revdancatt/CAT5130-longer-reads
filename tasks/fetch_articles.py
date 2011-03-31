@@ -94,6 +94,26 @@ for row in json['zeitgeist']:
     if 'response' in new_json and 'content' in new_json['response'] and 'fields' in new_json['response']['content'] and 'body' in new_json['response']['content']['fields']:
       word_count = len(new_json['response']['content']['fields']['body'].split(' '))
     
+    #
+    # Find out if there's a tone/minutebyminute in there
+    #
+    rejectLiveblog = False
+    for tag in new_json['response']['content']['tags']:
+      if tag['id'] == 'tone/minutebyminute':
+        rejectLiveblog = True
+        break
+     
+    rejectNoThumb = False
+    if 'thumbnail' not in new_json['response']['content']['fields']:
+      rejectNoThumb = True
+    
+    #
+    # if we've found any reason to reject it, then do that here
+    #
+    rejectArticle = False
+    if word_count < 1000 or rejectLiveblog == True or rejectNoThumb == True:
+      rejectArticle = True
+    
     try:
       new_row                  = Items()
       new_row.apiUrl           = str(row['apiUrl'])                    
@@ -102,7 +122,7 @@ for row in json['zeitgeist']:
       new_row.percent          = int(row['percent'])                    
       new_row.time_spent       = float(row['time_spent'])
       new_row.word_count       = int(word_count)
-      if word_count < 1000:
+      if rejectArticle == True:
         new_row.unreviewed     = 0
         new_row.rejected       = 1
       new_row.put()
