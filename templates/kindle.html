@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+  <title>Longer Reads Queue.</title>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="/js/md5.js"></script>
+  <script type="text/javascript" src="/js/kindle.js?v=1.1"></script>
+  <link rel="stylesheet" type="text/css" href="/css/main.css" />
+  <link rel="stylesheet" type="text/css" href="/css/kindle.css" />
+</head>
+<body>
+
+
+<div class="main">
+
+  {% for row in json %}
+    <div class=h1>{{ forloop.counter }} | {{ row.response.content.fields.headline }}</div>
+    <div class=standfirst>
+      {{ row.response.content.fields.standfirst|safe }}<br />
+      By {{ row.response.content.fields.byline }}</div>
+    <div class=story>
+      {{ row.response.content.fields.body|safe }}
+    </div>
+    <div class=footer>
+      <p class=published>
+        {{ row.response.content.fields.publishedFull|safe }}<br />
+        Tagged: {{ row.response.content.fields.tagsList|safeseq|join:", " }}<br />
+        Original: <a href="{{ row.response.content.fields.shortUrl }}">{{ row.response.content.fields.shortUrl }}</a><br />
+        <img src="http://qrcode.kaywa.com/img.php?s=2&d={{ row.response.content.fields.shortUrl }}" alt="qrcode"  />
+      </p>
+    </div>
+    <hr />
+  {% endfor %}
+</div>
+
+
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    //control.init();
+  });
+</script>
+
+</body>
+</html>

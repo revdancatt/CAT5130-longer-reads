@@ -240,6 +240,7 @@ control = {
       new_html += control.utils.formatDate(content.webPublicationDate) + '</p>';
       new_html += '<div class="quickReject">[ <a href="#" onclick="control.dontShow = true; control.reject(\'' + content.apiUrl + '\'); return false;">reject</a>: ]</div>';
       //  Check to see if there is a photo
+      /*
       if ('mediaAssets' in content && content.mediaAssets[0].type == 'picture') {
         if (parseInt(content.mediaAssets[0].fields.width) >= 320) {
           new_html += '<img class="main" src="' + content.mediaAssets[0].file + '" />';
@@ -252,6 +253,7 @@ control = {
           new_html += '<p class="photo_caption">' + content.mediaAssets[0].fields.credit + '</p>';
         }
       }
+      */
         
       $('div#' + target_div).html(new_html);            
       

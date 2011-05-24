@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+import admin.setup_django_version
+import os
+import sys
+import logging
+import xmlrpclib
+
 from google.appengine.api.labs import taskqueue
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
@@ -6,10 +12,6 @@ from django.utils import simplejson
 from datetime import datetime
 from admin.models import Items
 
-import os
-import sys
-import logging
-import xmlrpclib
 
 #
 # Ok, so this is annoying and daft *but* I want to keep passwords out of github
@@ -40,11 +42,13 @@ except Exception:
 ################################################################################
 ################################################################################
 
+print ''
 
 # Check to see if the time is too early, if it is then
 # we exit here
 if datetime.now().hour <= 3:
   print 'Too early for 1st publish'
+  print datetime.now().hour
   sys.exit()
   
 # Otherwise, see what has already published today
@@ -65,6 +69,7 @@ if rows.count() >= 2:
 # we kick us out in the above check
 if datetime.now().hour <= 13 and rows.count() == 1:
   print 'Too early for 2nd publish'
+  print datetime.now().hour
   sys.exit()
 
 # Now we need to get the next item in the queue

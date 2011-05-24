@@ -48,6 +48,9 @@ handlers:
 - url: /api/lr.get.approved
   script: api/lr.get.approved.py
 
+- url: /api/lr.get.published
+  script: api/lr.get.published.py
+
 
 
 ################################################################################
@@ -71,6 +74,9 @@ handlers:
 
 - url: /lastweek
   script: lastweek.py
+
+- url: /kindle
+  script: kindle.py
 
 - url: /wordcount
   script: wordcount.py

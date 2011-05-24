@@ -44,10 +44,10 @@ template_values = {
 # Now I want to know what articles are waiting to be reviewed and so on
 #
 
-rows = db.GqlQuery("SELECT * FROM Items ORDER BY last_update DESC LIMIT 200")
+rows = db.GqlQuery("SELECT * FROM Items WHERE published = 1 ORDER BY last_update DESC LIMIT 200")
 
 counter = 1
-results = []
+keys = []
 for row in rows:
   
   try:
@@ -63,31 +63,24 @@ for row in rows:
         if tag['id'] in ['tone/features', 'tone/news']:
           tags_ok = True
   
-      # go thru the tags making sure it's either news or a feature
-      if tags_ok == True:
-        tags_still_ok = False
-        for tag in json['response']['content']['tags']:
-          if tag['id'] in ['artanddesign/artanddesign', 'culture/culture', 'media/media', 'science/science', 'technology/technology', 'world/world']:
-            tags_still_ok = True
-  
-  
       #
       # if we failed the tags test, then reject the thing
-      if tags_ok == False or tags_still_ok == False:
+      if tags_ok == False:
         reject = True
   
-      if 'thumbnail' not in json['response']['content']['fields']:
-        reject = True
-        
       if reject == False:
-        result = {'word_count': row.word_count, 'hotness': row.percent, 'json': json}
-        results.append(result)
+        new_key = {}
+        print json
+        new_key['storyUrl'] = json['response']['content']['webUrl']
+        keys.append(new_key)
         counter+=1
-        if counter > 5:
+        if counter > 10:
           break
   except Exception:
     continue
   
+results = {'keys': keys}
+
 print 'Content-Type: application/json; charset=UTF-8'
 print ''      
 print simplejson.dumps(results)

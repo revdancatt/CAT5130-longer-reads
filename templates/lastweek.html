@@ -1,0 +1,36 @@
+<html lang="en">
+<head>
+  <title>Longer Reads Queue.</title>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="/js/md5.js"></script>
+  <script type="text/javascript" src="/js/lastweek.js?v=1.1"></script>
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.1.1/build/cssreset/reset-min.css" />
+  <link rel="stylesheet" type="text/css" href="/css/main.css" />
+  <script>
+    var data = {{ published_items|safe }};
+  </script>
+</head>
+<body>
+
+
+<div class="contents">
+  <h1>The Long Good Read</h1>
+  <h2>Week in review</h2>
+  <dl id="contents">
+  </dl>
+</div>
+
+<div class="main">
+</div>
+
+
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    control.init();
+  });
+</script>
+
+</body>
+</html>

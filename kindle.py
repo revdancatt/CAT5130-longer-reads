@@ -6,6 +6,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
 from google.appengine.ext import db
 from django.utils import simplejson
+from datetime import date, datetime
 
 from admin.models import Items
 
@@ -60,7 +61,7 @@ class Main(webapp.RequestHandler):
     #
     # Now I want to know what articles are waiting to be reviewed and so on
     #
-    rows = db.GqlQuery("SELECT * FROM Items WHERE unreviewed = 1")
+    rows = db.GqlQuery("SELECT * FROM Items WHERE published = 1 AND queued = 0 ORDER BY published_ordinal DESC LIMIT 14")
     
     #
     # Yes, yes I know this is dumb, so go make it better, anyway I just want this
@@ -72,31 +73,47 @@ class Main(webapp.RequestHandler):
     #
     json_a = []
     for row in rows:
+      
       new_json = simplejson.loads(row.json)
       new_json['response']['content']['fields']['time_spent'] = (row.time_spent)
       new_json['response']['content']['fields']['view_count'] = (row.view_count)
       new_json['response']['content']['fields']['percent'] = (row.percent)
-      json_a.append(new_json)
+      d = date.fromordinal(row.published_ordinal)
+      dow = d.strftime("%A")
+      new_json['response']['content']['fields']['published_ordinal'] = (row.published_ordinal)
+      new_json['response']['content']['fields']['dow'] = dow
       
-    template_values['review_items'] = simplejson.dumps(json_a).replace('\/','/').replace('}}}, {', '}}},\n{') # << larks!!!
-    
-    #
-    # Now I want to know what articles are waiting to be reviewed and so on
-    #
-    rows = db.GqlQuery("SELECT * FROM Items WHERE queued = 1 ORDER BY last_update ASC")
-    
-    json_a = []
-    for row in rows:
-      new_json = simplejson.loads(row.json)
-      new_json['response']['content']['fields']['time_spent'] = (row.time_spent)
-      new_json['response']['content']['fields']['view_count'] = (row.view_count)
-      new_json['response']['content']['fields']['percent'] = (row.percent)
-      json_a.append(new_json)
+      # Now I want to go thru all the tags finding out where we first published it
+      publishedIn = 'The Guardian'
+      for tag in new_json['response']['content']['tags']:
+        if tag['type'] == 'publication':
+          publishedIn = tag['webTitle']
+      new_json['response']['content']['fields']['publishedIn'] = publishedIn.replace('The', 'the')
       
-    template_values['queued_items'] = simplejson.dumps(json_a).replace('\/','/').replace('}}}, {', '}}},\n{') # << larks!!!
+      # And get the publication date
+      d = datetime.strptime(new_json['response']['content']['webPublicationDate'].replace('T',' ').replace('Z', '').split(' ')[0], '%Y-%m-%d')
+      new_json['response']['content']['fields']['publishedOn'] = datetime.strftime(d, '%a %d %b %Y')
+      new_json['response']['content']['fields']['publishedFull'] = 'First published in ' + new_json['response']['content']['fields']['publishedIn'] + ' on ' + new_json['response']['content']['fields']['publishedOn']
+      new_json['response']['content']['fields']['publishedFull'] = 'First published in ' + new_json['response']['content']['sectionName'] + ' on ' + new_json['response']['content']['fields']['publishedOn']
+      
+      
+      tagsList = []
+      for tag in new_json['response']['content']['tags']:
+        if tag['type'] == 'keyword':
+          tagsList.append(tag['webTitle'])
+      new_json['response']['content']['fields']['tagsList'] = tagsList
+      
+
+      json_a.append(new_json)
+          
+    json_a.reverse()
+      
+    template_values['published_items'] = simplejson.dumps(json_a).replace('\/','/').replace('}}}, {', '}}},\n{') # << larks!!!
+    template_values['json'] = json_a
+    
     
 
-    path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
+    path = os.path.join(os.path.dirname(__file__), 'templates/kindle.html')
     self.response.out.write(template.render(path, template_values))
     
     
@@ -104,7 +121,7 @@ class Main(webapp.RequestHandler):
 # I have no idea what's going on here, but I seem to need to 
 # match up the path bit here with what brought us here from the
 # main.py file
-application = webapp.WSGIApplication([('/', Main)], debug=True)
+application = webapp.WSGIApplication([('/kindle', Main)], debug=True)
 
     
 def main():

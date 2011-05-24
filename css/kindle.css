@@ -1,0 +1,22 @@
+body {
+  font-size: 12px;
+}
+
+.h1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.standfirst {
+  font-size: 16px;
+  color: #666666;
+}
+
+.byline {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.gu_advert {
+  display:none;
+}

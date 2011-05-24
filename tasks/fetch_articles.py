@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+import admin.setup_django_version
+import os
+import sys
+import logging
+
 from google.appengine.api.labs import taskqueue
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
@@ -6,9 +11,6 @@ from django.utils import simplejson
 
 from admin.models import Items
 
-import os
-import sys
-import logging
 
 #
 # Ok, so this is annoying and daft *but* I want to keep passwords out of github
@@ -69,6 +71,7 @@ except Exception:
 # Loop thru each one getting the API url, and checking to see if we
 # already have it
 #
+print ''
 for row in json['zeitgeist']:
   
   # Make the db call to see if we already have it 
@@ -77,6 +80,7 @@ for row in json['zeitgeist']:
   # if not, go grab the fill json for it
   if rows.count() == 0:
     new_fetch_url = row['apiUrl'] + '?format=json&show-fields=all&show-tags=all&show-media=all&api-key=' + passwords.guardian_api_key()
+  
     new_result = urlfetch.fetch(url=new_fetch_url)
     if new_result.status_code != 200:
       logging.debug('Fetch Fail: minor: when fetching gu api')
