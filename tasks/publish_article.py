@@ -4,6 +4,7 @@ import os
 import sys
 import logging
 import xmlrpclib
+import admin.twitter as twitter
 
 from google.appengine.api.labs import taskqueue
 from google.appengine.api import urlfetch
@@ -86,9 +87,49 @@ pub_row = rows[0]
 json = simplejson.loads(pub_row.json)
 json = json['response']['content']
 
+
+################################################################################
+#
+# Do twitter stuff first
+#
+################################################################################
+wordCount = len(json['fields']['body'].split(' '))
+webTitle = json['webTitle']
+shortUrl = json['fields']['shortUrl']
+
+if wordCount >= 1500:
+  tweetTitle = '%s %s #longreads' % (webTitle, shortUrl)
+  if len(tweetTitle) > 128:
+    shortenBy = len(tweetTitle) - 125
+    webTitle = webTitle[0:shortenBy]
+    webTitle = '%s...' % webTitle
+    tweetTitle = '%s %s #longreads' % (webTitle, shortUrl)
+else:
+  tweetTitle = '%s %s' % (webTitle, shortUrl)
+  if len(tweetTitle) > 128:
+    shortenBy = len(tweetTitle) - 125
+    webTitle = webTitle[0:shortenBy]
+    webTitle = '%s...' % webTitle
+    tweetTitle = '%s %s' % (webTitle, shortUrl)
+    
+# Let us try and post it to twitter first...
+# prepare the auth thingy
+api = twitter.Api(  consumer_key=passwords.twitter()['consumer_key'],
+                    consumer_secret=passwords.twitter()['consumer_secret'],
+                    access_token_key=passwords.twitter()['access_token_key'],
+                    access_token_secret=passwords.twitter()['access_token_secret'],
+                    cache=None)
+
+# post the status
+status = api.PostUpdate(tweetTitle)
+
+
+
+################################################################################
 #
 # Set up the info we need to post to wordpress
 #
+################################################################################
 wp_url = 'http://' + passwords.wordpress()['server'] + '/xmlrpc.php'
 wp_username = passwords.wordpress()['username']
 wp_password = passwords.wordpress()['password']
@@ -154,5 +195,6 @@ pub_row.published_ordinal = o
 pub_row.published = 1
 pub_row.queued = 0
 pub_row.put()
+
 
 print 'done!'
