@@ -79,7 +79,8 @@ for row in json['zeitgeist']:
   
   # if not, go grab the fill json for it
   if rows.count() == 0:
-    new_fetch_url = row['apiUrl'] + '?format=json&show-fields=all&show-tags=all&show-media=all&api-key=' + passwords.guardian_api_key_publishing()
+    new_fetch_url = row['apiUrl'] + '?format=json&show-fields=all&show-tags=all&api-key=' + passwords.guardian_api_key_publishing()
+    print 'fetching row: %s' % new_fetch_url
   
     new_result = urlfetch.fetch(url=new_fetch_url)
     if new_result.status_code != 200:
