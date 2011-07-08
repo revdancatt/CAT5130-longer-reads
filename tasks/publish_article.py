@@ -121,7 +121,15 @@ api = twitter.Api(  consumer_key=passwords.twitter()['consumer_key'],
                     cache=None)
 
 # post the status
-status = api.PostUpdate(tweetTitle)
+try:
+  status = api.PostUpdate(tweetTitle)
+except:
+  pub_row.published_ordinal = 0
+  pub_row.published = 1
+  pub_row.queued = 0
+  pub_row.put()
+  print 'failed to post!'
+  sys.exit()
 
 
 
