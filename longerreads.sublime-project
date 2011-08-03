@@ -19,7 +19,7 @@
 			"file": "/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-catt/longerreads/passwords.py",
 			"settings":
 			{
-				"buffer_size": 913,
+				"buffer_size": 916,
 				"line_ending": "Unix"
 			}
 		}
@@ -144,15 +144,15 @@
 					"file": "/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-catt/longerreads/passwords.py",
 					"settings":
 					{
-						"buffer_size": 913,
+						"buffer_size": 916,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								913,
-								913
+								339,
+								339
 							]
 						],
 						"settings":
