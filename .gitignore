@@ -1,8 +1,10 @@
 # Ignore any Komodo project files.
 *.kpf
+*.sublime-project
 
 # Ignore (generated) pyc files,
 *.pyc
 
 # Ignore passwords files,
 passwords.py
+longerreads.sublime-project
