@@ -1,0 +1,234 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-catt/longerreads/tasks/fetch_articles.py",
+			"settings":
+			{
+				"buffer_size": 4266,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-catt/longerreads/passwords.py",
+			"settings":
+			{
+				"buffer_size": 913,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0,
+		"selected_items":
+		[
+		],
+		"width": 0
+	},
+	"console":
+	{
+		"height": 0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-catt/gu-social-signal-cruncher-v3/admin/api/gu.add.section.py",
+		"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-guardian/gu-social-signals-view/api/gu.get.widgetbox.requests.py",
+		"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-catt/gu-social-signals-thebrain-v3/app.yaml",
+		"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-catt/gu-social-signals-thebrain-v3/monitor/guardian.py",
+		"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-guardian/gu-social-signals-view/zeitgeist_page_v3.py",
+		"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-guardian/gu-social-signals-view/templates/zeitgeist_page_v3.html",
+		"/Users/danielcatt/Library/Application Support/Sublime Text 2/Packages/Default/Base File.sublime-settings",
+		"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-catt/gu-social-signals-thebrain-v3/api/gu.get.zeitgeist.py",
+		"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-guardian/gu-social-signals-view/lib_functions.py",
+		"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-guardian/gu-social-signals-view/lib_models.py",
+		"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-catt/gu-social-signals-thebrain-v3/admin/functions.py",
+		"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-guardian/gu-social-signals-view/whats_hot_new2.py",
+		"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-guardian/gu-social-signals-view/admin/fetchUtility.py",
+		"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-guardian/gu-social-signals-view/admin/receiveUtility.py"
+	],
+	"find":
+	{
+		"height": 0
+	},
+	"find_in_files":
+	{
+		"height": 0,
+		"include_history":
+		[
+		],
+		"location_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"makeResultsArray",
+			"getQueryString",
+			"getResultJSON"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer": false,
+		"whole_word": false,
+		"wrap": true
+	},
+	"folders":
+	{
+		"mount_points":
+		[
+			"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-catt/longerreads"
+		]
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-catt/longerreads/tasks/fetch_articles.py",
+					"settings":
+					{
+						"buffer_size": 4266,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-catt/longerreads/passwords.py",
+					"settings":
+					{
+						"buffer_size": 913,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								913,
+								913
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0
+	},
+	"input":
+	{
+		"height": 0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0,
+			1
+		],
+		"rows":
+		[
+			0,
+			1
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0,
+		"selected_items":
+		[
+		],
+		"width": 0
+	},
+	"select_project":
+	{
+		"height": 500,
+		"selected_items":
+		[
+			[
+				"",
+				"/Users/danielcatt/Dropbox/Dan's Stuff/Documents/github-catt/gu-social-signal-cruncher-v3/gu-social-signals-cruncher-v3.sublime-project"
+			]
+		],
+		"width": 380
+	},
+	"show_minimap": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 244.52734375,
+	"status_bar_visible": true
+}
