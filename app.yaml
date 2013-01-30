@@ -81,6 +81,9 @@ handlers:
 - url: /wordcount
   script: wordcount.py
 
+- url: /getPublished
+  script: getPublished.py
+
 - url: .*
   script: index.py
   login: admin
